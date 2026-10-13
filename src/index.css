@@ -1,0 +1,69 @@
+@import 'tailwindcss';
+
+@theme {
+  /* Palette — dark modern, accents match the README badge colors */
+  --color-base: #0a0a12;
+  --color-surface: #12121d;
+  --color-surface-2: #181826;
+  --color-edge: #23233a;
+  --color-primary: #a855f7;
+  --color-accent: #ec4899;
+  --color-ink: #e7e7f0;
+  --color-muted: #9aa0b5;
+
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Space Grotesk', 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-base font-sans text-ink antialiased;
+  }
+
+  ::selection {
+    @apply bg-primary/40 text-white;
+  }
+}
+
+@layer components {
+  /* Reusable building blocks */
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-primary/85;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 rounded-lg border border-edge bg-surface/60 px-5 py-2.5 text-sm font-medium text-ink transition-colors duration-200 hover:border-primary/60 hover:text-primary;
+  }
+
+  .card {
+    @apply rounded-2xl border border-edge bg-surface p-6 transition-all duration-200;
+  }
+
+  .card-hover {
+    @apply hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_12px_40px_-16px_rgba(168,85,247,0.45)];
+  }
+
+  .tag {
+    @apply rounded-full border border-edge bg-surface-2 px-2.5 py-1 text-xs font-medium text-muted;
+  }
+
+  .section-label {
+    @apply text-xs font-semibold uppercase tracking-[0.2em] text-primary;
+  }
+
+  .section-title {
+    @apply font-display text-3xl font-bold text-ink sm:text-4xl;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary via-fuchsia-400 to-accent bg-clip-text text-transparent;
+  }
+}
