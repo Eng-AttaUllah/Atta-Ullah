@@ -2,7 +2,7 @@
 
 Personal portfolio website: **React + TypeScript + Vite + Tailwind CSS v4**.
 
-**Live:** https://eng-attaullah.github.io/Atta-Ullah/
+**Live:** https://eng-attaullah.github.io/Atta-Ullah-Portfolio/
 
 ## Develop
 

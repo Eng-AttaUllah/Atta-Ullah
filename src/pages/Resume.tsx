@@ -1,9 +1,16 @@
-import { FiDownload, FiMail } from 'react-icons/fi'
-import { bio, education, skillFolders } from '../data/about'
+import { FiDownload, FiMail, FiPhone } from 'react-icons/fi'
+import {
+  activities,
+  bio,
+  certifications,
+  education,
+  languages,
+  skillFolders,
+} from '../data/about'
 import { projects } from '../data/projects'
 import { site } from '../data/site'
 
-/** Path of the resume PDF — drop your file at public/resume/Atta-Ullah-Resume.pdf */
+/** Path of the resume PDF — public/resume/Atta-Ullah-Resume.pdf */
 const RESUME_PDF = 'resume/Atta-Ullah-Resume.pdf'
 
 export default function Resume() {
@@ -20,7 +27,7 @@ export default function Resume() {
         </div>
         <div className="resume-actions">
           <a href={RESUME_PDF} download className="btn btn-primary mono">
-            <FiDownload /> Download PDF
+            <FiDownload /> Download CV
           </a>
           <a href={`mailto:${site.email}`} className="btn btn-ghost mono">
             <FiMail /> Contact
@@ -28,31 +35,43 @@ export default function Resume() {
         </div>
       </header>
 
+      {/* Profile */}
       <section className="resume-section">
-        <h2>summary</h2>
-        <p style={{ margin: 0, color: 'var(--text-dim)', fontSize: 14, lineHeight: 1.7 }}>
-          {site.objective}
+        <h2>profile</h2>
+        <p style={{ margin: 0, color: 'var(--text-dim)', fontSize: 14, lineHeight: 1.75 }}>
+          {bio[0]}
         </p>
         <div className="bio-meta" style={{ borderTop: 'none', paddingTop: 10 }}>
+          <div className="bio-meta-row">
+            <span className="bio-meta-label">phone:</span>
+            <a className="meta-link" href={`tel:${site.phone.replace(/[^+\d]/g, '')}`}>
+              {site.phone}
+            </a>
+          </div>
           <div className="bio-meta-row">
             <span className="bio-meta-label">email:</span>
             <a className="meta-link" href={`mailto:${site.email}`}>
               {site.email}
             </a>
           </div>
+          <div className="bio-meta-row">
+            <span className="bio-meta-label">location:</span>
+            <span className="bio-meta-val">{site.location}</span>
+          </div>
           {site.socials
-            .filter((s) => s.icon !== 'email')
+            .filter((s) => s.icon === 'linkedin' || s.icon === 'github')
             .map((s) => (
               <div className="bio-meta-row" key={s.label}>
                 <span className="bio-meta-label">{s.label.toLowerCase()}:</span>
                 <a className="meta-link" href={s.href} target="_blank" rel="noreferrer">
-                  {s.handle}
+                  {s.href.replace(/^https?:\/\//, '')}
                 </a>
               </div>
             ))}
         </div>
       </section>
 
+      {/* Skills */}
       <section className="resume-section">
         <h2>skills</h2>
         <div className="resume-skills-grid">
@@ -73,6 +92,7 @@ export default function Resume() {
         </div>
       </section>
 
+      {/* Education */}
       <section className="resume-section">
         <h2>education</h2>
         <ul className="resume-list">
@@ -88,13 +108,33 @@ export default function Resume() {
         </ul>
       </section>
 
+      {/* Certifications */}
+      <section className="resume-section">
+        <h2>certifications</h2>
+        <div className="certs-grid">
+          {certifications.map((cert) => (
+            <div key={cert.name} className="cert-card">
+              <div className="cert-card-main">
+                <div className="cert-card-issuer mono">[{cert.issuer}]</div>
+                <h4 className="cert-card-name">
+                  {cert.name}
+                  {cert.honor && <span className="project-badge mono" style={{ marginLeft: 8 }}>Honors</span>}
+                </h4>
+                <div className="cert-card-date">{cert.period}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Experience */}
       <section className="resume-section">
         <h2>experience</h2>
         <ul className="resume-list">
           <li>
             <h3>AI/ML Intern</h3>
             <span className="meta">ZyroInterns · Aug 2026 – Oct 2026</span>
-            <p>{bio[3]}</p>
+            <p>{bio[4]}</p>
           </li>
           <li>
             <h3>Frontend Development Intern</h3>
@@ -104,6 +144,23 @@ export default function Resume() {
         </ul>
       </section>
 
+      {/* Extracurricular */}
+      <section className="resume-section">
+        <h2>extracurricular</h2>
+        <ul className="resume-list">
+          {activities.map((item) => (
+            <li key={item.role}>
+              <h3>{item.role}</h3>
+              <span className="meta">
+                {item.org} · {item.period}
+              </span>
+              <p>{item.detail}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* Projects */}
       <section className="resume-section">
         <h2>projects</h2>
         <ul className="resume-list">
@@ -133,6 +190,42 @@ export default function Resume() {
             </li>
           ))}
         </ul>
+      </section>
+
+      {/* Languages */}
+      <section className="resume-section">
+        <h2>languages</h2>
+        <div className="project-card-stack">
+          {languages.map((lang) => (
+            <span key={lang.name} className="skill-badge mono">
+              <span className="badge-dot" />
+              {lang.name} — {lang.level}
+            </span>
+          ))}
+        </div>
+      </section>
+
+      {/* direct contact strip */}
+      <section className="resume-section">
+        <h2>contact</h2>
+        <div className="bio-meta" style={{ borderTop: 'none', paddingTop: 0 }}>
+          <div className="bio-meta-row">
+            <span className="bio-meta-label">
+              <FiPhone style={{ verticalAlign: -2 }} /> phone:
+            </span>
+            <a className="meta-link" href={`tel:${site.phone.replace(/[^+\d]/g, '')}`}>
+              {site.phone}
+            </a>
+          </div>
+          <div className="bio-meta-row">
+            <span className="bio-meta-label">
+              <FiMail style={{ verticalAlign: -2 }} /> email:
+            </span>
+            <a className="meta-link" href={`mailto:${site.email}`}>
+              {site.email}
+            </a>
+          </div>
+        </div>
       </section>
     </div>
   )

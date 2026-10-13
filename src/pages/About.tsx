@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import WindowBar from '../components/WindowBar'
-import { bio, certifications, education, skillFolders } from '../data/about'
+import { activities, bio, certifications, education, skillFolders } from '../data/about'
 import { site } from '../data/site'
 
-type TabId = 'bio' | 'skills' | 'education' | 'certs'
+type TabId = 'bio' | 'skills' | 'education' | 'certs' | 'activities'
 
 const TABS: { id: TabId; command: string; label: string }[] = [
   { id: 'bio', command: 'cat bio.md', label: 'Biography' },
   { id: 'skills', command: 'ls -l skills/', label: 'Skills & Stack' },
   { id: 'education', command: 'cat education.log', label: 'Education' },
   { id: 'certs', command: 'cat certs.json', label: 'Certifications' },
+  { id: 'activities', command: 'cat activities.log', label: 'Activities' },
 ]
 
 function CopyButton({ text }: { text: string }) {
@@ -57,6 +58,13 @@ function BioPane() {
         <div className="bio-meta-row">
           <span className="bio-meta-label">location:</span>
           <span className="bio-meta-val">{site.location}</span>
+        </div>
+        <div className="bio-meta-row">
+          <span className="bio-meta-label">phone:</span>
+          <a className="meta-link" href={`tel:${site.phone.replace(/[^+\d]/g, '')}`}>
+            {site.phone}
+          </a>
+          <CopyButton text={site.phone} />
         </div>
         <div className="bio-meta-row">
           <span className="bio-meta-label">email:</span>
@@ -142,8 +150,37 @@ function CertsPane() {
         <div key={cert.name} className="cert-card">
           <div className="cert-card-main">
             <div className="cert-card-issuer mono">[{cert.issuer}]</div>
-            <h4 className="cert-card-name">{cert.name}</h4>
+            <h4 className="cert-card-name">
+              {cert.name}
+              {cert.honor && (
+                <span className="project-badge mono" style={{ marginLeft: 8 }}>
+                  Honors
+                </span>
+              )}
+            </h4>
             <div className="cert-card-date">{cert.period}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function ActivitiesPane() {
+  return (
+    <div className="timeline">
+      {activities.map((item) => (
+        <div key={item.role} className="timeline-item">
+          <div className="timeline-marker">
+            <div className="timeline-dot" />
+          </div>
+          <div className="timeline-content">
+            <div className="timeline-header">
+              <h4 className="timeline-degree">{item.role}</h4>
+              <span className="timeline-period mono">{item.period}</span>
+            </div>
+            <div className="timeline-school mono">{item.org}</div>
+            <div className="timeline-detail mono">{item.detail}</div>
           </div>
         </div>
       ))}
@@ -219,6 +256,7 @@ export default function About() {
           {tab === 'skills' && <SkillsPane />}
           {tab === 'education' && <EducationPane />}
           {tab === 'certs' && <CertsPane />}
+          {tab === 'activities' && <ActivitiesPane />}
         </div>
 
         <div className="see-also-footer mono">
