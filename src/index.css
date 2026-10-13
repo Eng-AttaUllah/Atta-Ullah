@@ -732,13 +732,13 @@ img {
 
 .hero-photo-meta {
   display: flex;
-  justify-content: space-between;
-  gap: 12px;
+  flex-direction: column;
+  gap: 3px;
   padding: 10px 14px;
   border-top: 1px solid var(--surface-border);
   font-size: 11px;
   color: var(--text-faint);
-  word-break: break-all;
+  overflow-wrap: anywhere;
 }
 
 @media (max-width: 860px) {

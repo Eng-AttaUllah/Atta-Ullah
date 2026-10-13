@@ -58,6 +58,10 @@ export default function Resume() {
             <span className="bio-meta-label">location:</span>
             <span className="bio-meta-val">{site.location}</span>
           </div>
+          <div className="bio-meta-row">
+            <span className="bio-meta-label">dob:</span>
+            <span className="bio-meta-val">{site.dob}</span>
+          </div>
           {site.socials
             .filter((s) => s.icon === 'linkedin' || s.icon === 'github')
             .map((s) => (
@@ -103,6 +107,7 @@ export default function Resume() {
                 {item.school} · {item.period}
               </span>
               <p>{item.detail}</p>
+              {item.extra && <p>{item.extra}</p>}
             </li>
           ))}
         </ul>

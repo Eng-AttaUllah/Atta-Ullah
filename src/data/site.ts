@@ -16,14 +16,15 @@ export const site = {
   handle: 'attaullah',
   host: 'portfolio',
   role: 'BS Computer Science (AI) Student',
-  location: 'Mardan, KPK, Pakistan',
+  location: 'Anarbaig, Gumbat, Dist. Mardan, Khyber Pakhtunkhwa, Pakistan',
   email: 'attikhan0344@gmail.com',
   phone: '+92 319-2527926',
+  dob: '28 March 2005',
   tagline: 'Turning raw data into predictions, and ideas into working projects.',
   objective:
-    'Motivated and detail-oriented undergraduate specializing in Artificial Intelligence, with a strong analytical foundation from a Pre-Engineering background (A1 grade). Eager to apply technical and problem-solving skills to real-world AI and software challenges.',
+    'Computer Science undergraduate (5th semester) specializing in Artificial Intelligence at Abdul Wali Khan University Mardan, with a CGPA of 3.26/4.00 (76.2%). Strong foundation in programming, data structures, databases, and web development, complemented by professional certifications in AI and web technologies. Eager to apply software and problem-solving skills to real-world AI challenges.',
   availability: 'available for internships & entry-level roles',
-  gradYear: '2027',
+  cgpa: '3.26 / 4.00',
   resumePage: '/resume',
   socials: [
     { label: 'GitHub', handle: 'Eng-AttaUllah', href: 'https://github.com/Eng-AttaUllah', icon: 'github' },
@@ -55,8 +56,8 @@ export const nav: NavLink[] = [
 export const stats = [
   { value: '7+', label: 'GitHub Projects' },
   { value: '2', label: 'Internships' },
-  { value: '6', label: 'Certifications' },
-  { value: '2027', label: 'Graduating' },
+  { value: '7', label: 'Certifications' },
+  { value: '3.26', label: 'CGPA / 4.00' },
 ]
 
 /** Boot sequence lines (shown once per session) */
@@ -64,7 +65,7 @@ export const bootLines = [
   { text: 'booting attaullah.sys ...', delay: 0 },
   { text: 'loading modules: ai_ml, data_science, web_dev', delay: 150 },
   { text: 'fetching GitHub telemetry...', delay: 300 },
-  { text: 'mounting /education ... AWKUM — BS CS (AI), in progress', delay: 450 },
+  { text: 'mounting /education ... AWKUM — BS CS (AI), 5th semester', delay: 450 },
   { text: 'mounting /experience ... ZyroInterns × 2', delay: 575 },
   { text: 'system check: OK', delay: 675 },
   { text: 'status: READY', delay: 775 },
@@ -77,7 +78,7 @@ export const neofetch = [
   { label: 'Kernel:', value: 'React 19 + Vite 8' },
   { label: 'Shell:', value: 'bash / react-router-dom' },
   { label: 'Repos:', value: '7 public sources' },
-  { label: 'Education:', value: 'BS CS (AI) — AWKUM (in progress)' },
+  { label: 'Education:', value: 'BS CS (AI) — AWKUM · CGPA 3.26' },
   { label: 'Focus:', value: 'Machine Learning / AI' },
   { label: 'Theme:', value: 'CRT / Phosphor Green' },
 ]

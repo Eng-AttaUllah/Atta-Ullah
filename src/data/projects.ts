@@ -25,7 +25,7 @@ export const projects: Project[] = [
     slug: 'adveto',
     pid: '01',
     name: 'AdVeto',
-    tagline: 'Age-aware ad risk classification for Android — final year project.',
+    tagline: 'Age-aware ad risk classification for Android.',
     category: 'ai_ml',
     status: 'in_progress',
     statusLabel: 'in_progress',
@@ -39,7 +39,7 @@ export const projects: Project[] = [
       'MediaProjection capture with capture-denial handled as a first-class state',
       'Evaluated on per-class recall, macro-F1, decision latency, and peak memory',
     ],
-    badge: '🎓 Capstone',
+    badge: '🎓 AI Project',
     featured: true,
   },
   {

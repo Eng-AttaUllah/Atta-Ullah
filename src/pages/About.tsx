@@ -60,6 +60,10 @@ function BioPane() {
           <span className="bio-meta-val">{site.location}</span>
         </div>
         <div className="bio-meta-row">
+          <span className="bio-meta-label">dob:</span>
+          <span className="bio-meta-val">{site.dob}</span>
+        </div>
+        <div className="bio-meta-row">
           <span className="bio-meta-label">phone:</span>
           <a className="meta-link" href={`tel:${site.phone.replace(/[^+\d]/g, '')}`}>
             {site.phone}
@@ -136,6 +140,7 @@ function EducationPane() {
             </div>
             <div className="timeline-school mono">{item.school}</div>
             <div className="timeline-detail mono">{item.detail}</div>
+            {item.extra && <div className="timeline-detail mono">{item.extra}</div>}
           </div>
         </div>
       ))}

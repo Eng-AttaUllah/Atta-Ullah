@@ -63,7 +63,7 @@ export default function Home() {
             <span className="hero-cursor">_</span>
           </h1>
           <p className="hero-subtitle mono">
-            {site.role} · {site.location} · Graduating {site.gradYear}
+            {site.role} · {site.location} · CGPA {site.cgpa}
           </p>
           <p className="hero-tagline">{site.tagline}</p>
           <p className="hero-objective">{site.objective}</p>
