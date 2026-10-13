@@ -1,34 +1,43 @@
 import { site } from '../data/site'
-import SocialIcon from './SocialIcon'
 
 const year = new Date().getFullYear()
 
 export default function Footer() {
+  const github = site.socials.find((s) => s.icon === 'github')
+  const linkedin = site.socials.find((s) => s.icon === 'linkedin')
+  const instagram = site.socials.find((s) => s.icon === 'instagram')
+
   return (
-    <footer className="mt-auto border-t border-edge bg-surface/40">
-      <div className="container-page flex flex-col items-center gap-5 py-10 text-center sm:flex-row sm:justify-between sm:text-left">
-        <div>
-          <p className="font-display font-semibold">
-            {site.name} <span className="text-muted">— {site.role}</span>
-          </p>
-          <p className="mt-1 text-sm text-muted">
-            <a href={`mailto:${site.email}`} className="hover:text-primary">
-              {site.email}
+    <footer className="footer">
+      <div className="container footer-inner mono">
+        <span className="footer-line">
+          <span className="footer-dot" />
+          system_status: online
+        </span>
+        <span className="footer-line footer-center">
+          © {year} {site.name.toLowerCase()} — {site.location.toLowerCase()}
+        </span>
+        <span className="footer-line">
+          {github && (
+            <a href={github.href} target="_blank" rel="noreferrer">
+              github
             </a>
-          </p>
-        </div>
-
-        <div className="flex items-center gap-5">
-          {site.socials.map((link) => (
-            <SocialIcon key={link.label} link={link} className="text-xl" />
-          ))}
-        </div>
-
-        <p className="text-xs text-muted">
-          © {year} {site.name}
-          {' · '}
-          <span>{site.tagline}</span>
-        </p>
+          )}
+          <span className="footer-sep">/</span>
+          {linkedin && (
+            <a href={linkedin.href} target="_blank" rel="noreferrer">
+              linkedin
+            </a>
+          )}
+          {instagram && (
+            <>
+              <span className="footer-sep">/</span>
+              <a href={instagram.href} target="_blank" rel="noreferrer">
+                instagram
+              </a>
+            </>
+          )}
+        </span>
       </div>
     </footer>
   )

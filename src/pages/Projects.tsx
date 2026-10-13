@@ -1,21 +1,71 @@
-import ProjectCard from '../components/ProjectCard'
-import { projects } from '../data/projects'
+import { useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import StatusBadge from '../components/StatusBadge'
+import { categories, projects } from '../data/projects'
 
 export default function Projects() {
-  return (
-    <section className="container-page py-20">
-      <p className="section-label">Work</p>
-      <h1 className="section-title mt-2">Projects</h1>
-      <p className="mt-4 max-w-2xl text-muted">
-        A selection of things I've built — from computer vision and Android ML to dependency-free
-        web apps.
-      </p>
+  const [filter, setFilter] = useState('all')
+  const navigate = useNavigate()
 
-      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {projects.map((project) => (
-          <ProjectCard key={project.slug} project={project} />
+  const rows = useMemo(
+    () => (filter === 'all' ? projects : projects.filter((p) => p.category === filter)),
+    [filter],
+  )
+
+  return (
+    <div className="container projects-page">
+      <header className="projects-head">
+        <h1 className="page-title mono">
+          <span className="page-id">ls -la</span> ~/projects
+        </h1>
+        <p className="page-sub">{projects.length} entries — selected work & repositories.</p>
+      </header>
+
+      <div className="filter-row mono">
+        {categories.map((category) => (
+          <button
+            key={category}
+            type="button"
+            className={`filter-chip${filter === category ? ' active' : ''}`}
+            onClick={() => setFilter(category)}
+          >
+            {category === 'all' ? 'all' : category.toLowerCase()}
+          </button>
         ))}
       </div>
-    </section>
+
+      <div className="plist">
+        <div className="plist-header mono">
+          <span className="col-pid">PID</span>
+          <span className="col-name">NAME</span>
+          <span className="col-cat">CATEGORY</span>
+          <span className="col-status">STATUS</span>
+          <span className="col-year">YEAR</span>
+        </div>
+        {rows.map((project) => (
+          <div
+            key={project.slug}
+            className="plist-row"
+            role="button"
+            tabIndex={0}
+            onClick={() => navigate(`/projects/${project.slug}`)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') navigate(`/projects/${project.slug}`)
+            }}
+          >
+            <span className="col-pid mono">{project.pid}</span>
+            <span className="col-name">
+              <span className="plist-name">{project.name}</span>
+              <span className="plist-tagline">{project.tagline}</span>
+            </span>
+            <span className="col-cat mono">{project.category}</span>
+            <span className="col-status">
+              <StatusBadge status={project.status} label={project.statusLabel} />
+            </span>
+            <span className="col-year mono">{project.year}</span>
+          </div>
+        ))}
+      </div>
+    </div>
   )
 }

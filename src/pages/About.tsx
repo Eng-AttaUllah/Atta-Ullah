@@ -1,88 +1,239 @@
-import { useState } from 'react'
-import { skillGroups, site, timeline } from '../data/site'
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import WindowBar from '../components/WindowBar'
+import { bio, certifications, education, skillFolders } from '../data/about'
+import { site } from '../data/site'
 
-function Avatar() {
-  const [photoFailed, setPhotoFailed] = useState(false)
+type TabId = 'bio' | 'skills' | 'education' | 'certs'
+
+const TABS: { id: TabId; command: string; label: string }[] = [
+  { id: 'bio', command: 'cat bio.md', label: 'Biography' },
+  { id: 'skills', command: 'ls -l skills/', label: 'Skills & Stack' },
+  { id: 'education', command: 'cat education.log', label: 'Education' },
+  { id: 'certs', command: 'cat certs.json', label: 'Certifications' },
+]
+
+function CopyButton({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false)
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(text)
+    } catch {
+      const area = document.createElement('textarea')
+      area.value = text
+      document.body.appendChild(area)
+      area.select()
+      document.execCommand('copy')
+      document.body.removeChild(area)
+    }
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
 
   return (
-    <div className="relative mx-auto h-40 w-40 shrink-0 sm:mx-0">
-      {!photoFailed && (
-        <img
-          src="./profile.jpg"
-          alt={site.name}
-          className="h-40 w-40 rounded-full border border-edge object-cover"
-          onError={() => setPhotoFailed(true)}
-        />
-      )}
-      {photoFailed && (
-        <div className="flex h-40 w-40 items-center justify-center rounded-full border border-edge bg-gradient-to-br from-primary to-accent">
-          <span className="font-display text-5xl font-bold text-white">{site.initials}</span>
+    <button type="button" className="copy-btn mono" onClick={copy} title="Copy to clipboard">
+      {copied ? '✓ Copied!' : '⧉ Copy'}
+    </button>
+  )
+}
+
+function BioPane() {
+  return (
+    <div className="bio-pane">
+      <div className="bio-tag mono"># {site.name.toLowerCase().replace(/\s+/g, '_')}.md</div>
+      {bio.map((paragraph) => (
+        <p key={paragraph}>{paragraph}</p>
+      ))}
+      <div className="bio-meta">
+        <div className="bio-meta-row">
+          <span className="bio-meta-label">name:</span>
+          <span className="bio-meta-val">{site.name}</span>
         </div>
-      )}
+        <div className="bio-meta-row">
+          <span className="bio-meta-label">role:</span>
+          <span className="bio-meta-val">{site.role}</span>
+        </div>
+        <div className="bio-meta-row">
+          <span className="bio-meta-label">location:</span>
+          <span className="bio-meta-val">{site.location}</span>
+        </div>
+        <div className="bio-meta-row">
+          <span className="bio-meta-label">email:</span>
+          <a className="meta-link" href={`mailto:${site.email}`}>
+            {site.email}
+          </a>
+          <CopyButton text={site.email} />
+        </div>
+        <div className="bio-meta-row">
+          <span className="bio-meta-label">github:</span>
+          <a
+            className="meta-link"
+            href="https://github.com/Eng-AttaUllah"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Eng-AttaUllah
+          </a>
+          <CopyButton text="https://github.com/Eng-AttaUllah" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function SkillsPane() {
+  return (
+    <div>
+      <div className="skills-intro mono">
+        Total categories: {skillFolders.length}
+        <br />
+        Permissions: drwxr-xr-x (read-only reference)
+      </div>
+      <div className="skills-folders">
+        {skillFolders.map((folder) => (
+          <div key={folder.label} className="skill-folder-card">
+            <div className="skill-folder-header mono">
+              <span className="folder-icon">📁</span>
+              <span className="folder-name">{folder.label}/</span>
+            </div>
+            <div className="skill-folder-body">
+              {folder.items.map((item) => (
+                <span key={item} className="skill-badge mono">
+                  <span className="badge-dot" />
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function EducationPane() {
+  return (
+    <div className="timeline">
+      {education.map((item, i) => (
+        <div key={item.degree} className="timeline-item">
+          <div className="timeline-marker">
+            <div className="timeline-dot" />
+            {i < education.length - 1 && <div className="timeline-line" />}
+          </div>
+          <div className="timeline-content">
+            <div className="timeline-header">
+              <h4 className="timeline-degree">{item.degree}</h4>
+              <span className="timeline-period mono">{item.period}</span>
+            </div>
+            <div className="timeline-school mono">{item.school}</div>
+            <div className="timeline-detail mono">{item.detail}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function CertsPane() {
+  return (
+    <div className="certs-grid">
+      {certifications.map((cert) => (
+        <div key={cert.name} className="cert-card">
+          <div className="cert-card-main">
+            <div className="cert-card-issuer mono">[{cert.issuer}]</div>
+            <h4 className="cert-card-name">{cert.name}</h4>
+            <div className="cert-card-date">{cert.period}</div>
+          </div>
+        </div>
+      ))}
     </div>
   )
 }
 
 export default function About() {
+  const [tab, setTab] = useState<TabId>('bio')
+  const [typed, setTyped] = useState(TABS[0].command)
+  const [typing, setTyping] = useState(false)
+
+  const switchTab = (id: TabId) => {
+    if (id === tab || typing) return
+    setTyped('')
+    setTyping(true)
+    setTab(id)
+  }
+
+  // typewriter effect: types the active command one character at a time
+  useEffect(() => {
+    if (!typing) return
+    const command = TABS.find((t) => t.id === tab)!.command
+    let i = 0
+    const id = setInterval(() => {
+      i += 1
+      if (i >= command.length) {
+        clearInterval(id)
+        setTyped(command)
+        setTyping(false)
+      } else {
+        setTyped(command.slice(0, i))
+      }
+    }, 25)
+    return () => clearInterval(id)
+  }, [tab, typing])
+
   return (
-    <section className="container-page py-20">
-      <p className="section-label">About</p>
-      <h1 className="section-title mt-2">About me</h1>
+    <div className="container about-page">
+      <header className="about-head">
+        <h1 className="page-title mono">
+          <span className="page-id">man</span> {site.handle}
+        </h1>
+        <p className="page-sub">NAME, EDUCATION, SKILLS, CERTIFICATIONS — section 1</p>
+      </header>
 
-      {/* Intro */}
-      <div className="mt-10 flex flex-col items-start gap-8 sm:flex-row">
-        <Avatar />
-        <div className="space-y-4">
-          {site.about.map((paragraph) => (
-            <p key={paragraph} className="leading-relaxed text-muted">
-              {paragraph}
-            </p>
-          ))}
-          <p className="font-display text-primary">"{site.tagline}"</p>
-        </div>
-      </div>
+      <div className="tframe about-frame">
+        <WindowBar title={`man ${site.handle}(1)`} variant="tframe" />
 
-      {/* Skills */}
-      <div className="mt-16">
-        <h2 className="font-display text-2xl font-semibold">Skills</h2>
-        <div className="mt-6 grid gap-6 sm:grid-cols-3">
-          {skillGroups.map((group) => (
-            <div key={group.title} className="card">
-              <h3 className="font-semibold text-ink">{group.title}</h3>
-              <ul className="mt-3 flex flex-wrap gap-2">
-                {group.items.map((item) => (
-                  <li key={item} className="tag">
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
+        <div className="terminal-tabs-row">
+          {TABS.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              className={`terminal-tab-btn mono${tab === t.id ? ' active' : ''}`}
+              onClick={() => switchTab(t.id)}
+              disabled={typing}
+            >
+              <span className="tab-cmd">{t.command}</span>
+              {t.label}
+            </button>
           ))}
         </div>
-      </div>
 
-      {/* Timeline */}
-      <div className="mt-16">
-        <h2 className="font-display text-2xl font-semibold">Journey so far</h2>
-        <ol className="mt-6 space-y-6 border-l border-edge pl-6">
-          {timeline.map((item) => (
-            <li key={item.title} className="relative">
-              <span
-                aria-hidden
-                className="absolute -left-[31px] top-1.5 h-3 w-3 rounded-full border-2 border-base bg-primary"
-              />
-              <p className="text-xs font-semibold uppercase tracking-wider text-primary">
-                {item.period}
-              </p>
-              <h3 className="mt-1 font-display text-lg font-semibold text-ink">{item.title}</h3>
-              <p className="text-sm text-muted">{item.org}</p>
-              <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted">
-                {item.description}
-              </p>
-            </li>
-          ))}
-        </ol>
+        <div className="terminal-active-prompt mono">
+          <span className="prompt-dollar">$</span>
+          {typed}
+          <span className="prompt-cursor">▊</span>
+        </div>
+
+        <div className="tab-pane-content">
+          {tab === 'bio' && <BioPane />}
+          {tab === 'skills' && <SkillsPane />}
+          {tab === 'education' && <EducationPane />}
+          {tab === 'certs' && <CertsPane />}
+        </div>
+
+        <div className="see-also-footer mono">
+          <h4>SEE ALSO</h4>
+          <p style={{ margin: 0 }}>
+            <Link to="/projects" className="see-also-link">
+              projects(1)
+            </Link>
+            ,{' '}
+            <Link to="/contact" className="see-also-link">
+              contact(1)
+            </Link>
+          </p>
+        </div>
       </div>
-    </section>
+    </div>
   )
 }

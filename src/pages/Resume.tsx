@@ -1,102 +1,139 @@
 import { FiDownload, FiMail } from 'react-icons/fi'
-import { resume, resumePdf } from '../data/resume'
+import { bio, education, skillFolders } from '../data/about'
+import { projects } from '../data/projects'
+import { site } from '../data/site'
+
+/** Path of the resume PDF — drop your file at public/resume/Atta-Ullah-Resume.pdf */
+const RESUME_PDF = 'resume/Atta-Ullah-Resume.pdf'
 
 export default function Resume() {
   return (
-    <section className="container-page py-20">
-      <div className="flex flex-wrap items-end justify-between gap-4">
+    <div className="container resume-page">
+      <header className="resume-head">
         <div>
-          <p className="section-label">Resume</p>
-          <h1 className="section-title mt-2">{resume.name}</h1>
-          <p className="mt-2 text-muted">
-            {resume.role} · {resume.location}
+          <h1 className="page-title mono">
+            <span className="page-id">cat</span> resume.pdf
+          </h1>
+          <p className="page-sub">
+            {site.name} · {site.role} · {site.location}
           </p>
         </div>
-
-        <div className="flex gap-3">
-          <a href={resumePdf} download className="btn-primary">
+        <div className="resume-actions">
+          <a href={RESUME_PDF} download className="btn btn-primary mono">
             <FiDownload /> Download PDF
           </a>
-          <a href={`mailto:${resume.email}`} className="btn-ghost">
+          <a href={`mailto:${site.email}`} className="btn btn-ghost mono">
             <FiMail /> Contact
           </a>
         </div>
-      </div>
+      </header>
 
-      {/* Summary */}
-      <div className="card mt-10">
-        <h2 className="font-display text-lg font-semibold">Summary</h2>
-        <p className="mt-2 text-sm leading-relaxed text-muted">{resume.summary}</p>
-        <div className="mt-3 flex flex-wrap gap-4 text-sm">
-          {resume.links.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              target="_blank"
-              rel="noreferrer"
-              className="text-primary hover:underline"
-            >
-              {link.label}
+      <section className="resume-section">
+        <h2>summary</h2>
+        <p style={{ margin: 0, color: 'var(--text-dim)', fontSize: 14, lineHeight: 1.7 }}>
+          {site.objective}
+        </p>
+        <div className="bio-meta" style={{ borderTop: 'none', paddingTop: 10 }}>
+          <div className="bio-meta-row">
+            <span className="bio-meta-label">email:</span>
+            <a className="meta-link" href={`mailto:${site.email}`}>
+              {site.email}
             </a>
+          </div>
+          {site.socials
+            .filter((s) => s.icon !== 'email')
+            .map((s) => (
+              <div className="bio-meta-row" key={s.label}>
+                <span className="bio-meta-label">{s.label.toLowerCase()}:</span>
+                <a className="meta-link" href={s.href} target="_blank" rel="noreferrer">
+                  {s.handle}
+                </a>
+              </div>
+            ))}
+        </div>
+      </section>
+
+      <section className="resume-section">
+        <h2>skills</h2>
+        <div className="resume-skills-grid">
+          {skillFolders.map((group) => (
+            <div key={group.label}>
+              <h3 className="mono" style={{ margin: '0 0 8px', fontSize: 13, color: 'var(--amber)' }}>
+                {group.label}/
+              </h3>
+              <div className="project-card-stack">
+                {group.items.map((item) => (
+                  <span key={item} className="stack-pill mono">
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
-      </div>
+      </section>
 
-      {/* Skills */}
-      <div className="mt-8 grid gap-6 sm:grid-cols-3">
-        {resume.skills.map((group) => (
-          <div key={group.title} className="card">
-            <h2 className="font-display text-base font-semibold">{group.title}</h2>
-            <ul className="mt-3 space-y-1.5 text-sm text-muted">
-              {group.items.map((item) => (
-                <li key={item}>• {item}</li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-
-      {/* Education */}
-      <div className="card mt-8">
-        <h2 className="font-display text-lg font-semibold">Education</h2>
-        <ul className="mt-4 space-y-5">
-          {resume.education.map((item) => (
-            <li key={item.title}>
-              <div className="flex flex-wrap items-baseline justify-between gap-2">
-                <h3 className="font-semibold text-ink">{item.title}</h3>
-                <span className="text-xs font-medium text-primary">{item.period}</span>
-              </div>
-              <p className="text-sm text-muted">{item.org}</p>
-              <p className="mt-1 text-sm leading-relaxed text-muted">{item.description}</p>
+      <section className="resume-section">
+        <h2>education</h2>
+        <ul className="resume-list">
+          {education.map((item) => (
+            <li key={item.degree}>
+              <h3>{item.degree}</h3>
+              <span className="meta">
+                {item.school} · {item.period}
+              </span>
+              <p>{item.detail}</p>
             </li>
           ))}
         </ul>
-      </div>
+      </section>
 
-      {/* Projects */}
-      <div className="card mt-8">
-        <h2 className="font-display text-lg font-semibold">Selected projects</h2>
-        <ul className="mt-4 space-y-5">
-          {resume.projects.map((project) => (
-            <li key={project.title}>
-              <div className="flex flex-wrap items-baseline justify-between gap-2">
-                <h3 className="font-semibold text-ink">{project.title}</h3>
+      <section className="resume-section">
+        <h2>experience</h2>
+        <ul className="resume-list">
+          <li>
+            <h3>AI/ML Intern</h3>
+            <span className="meta">ZyroInterns · Aug 2026 – Oct 2026</span>
+            <p>{bio[3]}</p>
+          </li>
+          <li>
+            <h3>Frontend Development Intern</h3>
+            <span className="meta">ZyroInterns · Aug 2026 – Oct 2026</span>
+            <p>Completed the frontend development internship programme at ZyroInterns.</p>
+          </li>
+        </ul>
+      </section>
+
+      <section className="resume-section">
+        <h2>projects</h2>
+        <ul className="resume-list">
+          {projects.map((project) => (
+            <li key={project.slug}>
+              <h3>
+                {project.name}
                 {project.repo && (
-                  <a
-                    href={project.repo}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-xs text-primary hover:underline"
-                  >
-                    Repository
-                  </a>
+                  <>
+                    {' '}
+                    <a
+                      href={project.repo}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="meta"
+                      style={{ color: 'var(--accent)' }}
+                    >
+                      ↗
+                    </a>
+                  </>
                 )}
-              </div>
-              <p className="mt-1 text-sm leading-relaxed text-muted">{project.description}</p>
+              </h3>
+              <span className="meta">
+                {project.category} · {project.year} · {project.stack.join(', ')}
+              </span>
+              <p>{project.tagline}</p>
             </li>
           ))}
         </ul>
-      </div>
-    </section>
+      </section>
+    </div>
   )
 }

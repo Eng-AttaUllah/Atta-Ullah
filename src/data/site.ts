@@ -1,82 +1,81 @@
 export interface NavLink {
   label: string
   to: string
+  cmd: string
 }
 
 export interface SocialLink {
   label: string
+  handle?: string
   href: string
   icon: 'github' | 'linkedin' | 'instagram' | 'email'
 }
 
 export const site = {
   name: 'Atta Ullah',
-  initials: 'AU',
-  role: 'Artificial Intelligence Undergraduate',
-  tagline: 'Exploring AI, one project at a time.',
-  email: 'realattaullah461@gmail.com',
+  handle: 'attaullah',
+  host: 'portfolio',
+  role: 'AI Undergraduate & Developer',
   location: 'Pakistan',
-  intro:
-    'I build practical machine learning projects — turning raw data into predictions and ideas into working software.',
-  about: [
-    "I'm Atta Ullah, an Artificial Intelligence undergraduate focused on machine learning, data-driven problem solving, and building practical AI projects.",
-    'My stack includes Python, Jupyter, scikit-learn, Pandas, NumPy, and Matplotlib, along with Git and GitHub for collaboration and version control.',
-    'I enjoy working with datasets, models, and code — turning raw data into predictions and ideas into working projects. Recently I\'ve been building classifiers and prediction models, and I\'m always exploring something new in AI.',
-  ],
-  nav: [
-    { label: 'Home', to: '/' },
-    { label: 'Projects', to: '/projects' },
-    { label: 'About', to: '/about' },
-    { label: 'Resume', to: '/resume' },
-  ] satisfies NavLink[],
+  email: 'realattaullah461@gmail.com',
+  tagline: 'Turning raw data into predictions, and ideas into working projects.',
+  objective:
+    'Artificial Intelligence undergraduate focused on machine learning, data-driven problem solving, and practical AI projects — with hands-on internship experience in AI/ML and frontend development.',
+  availability: 'available for internships & entry-level roles',
+  gradYear: '2027',
+  resumePage: '/resume',
   socials: [
-    { label: 'GitHub', href: 'https://github.com/Eng-AttaUllah', icon: 'github' },
-    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/attaullah', icon: 'linkedin' },
-    { label: 'Instagram', href: 'https://www.instagram.com/realattaullahkhan/', icon: 'instagram' },
-    { label: 'Email', href: 'mailto:realattaullah461@gmail.com', icon: 'email' },
+    { label: 'GitHub', handle: 'Eng-AttaUllah', href: 'https://github.com/Eng-AttaUllah', icon: 'github' },
+    {
+      label: 'LinkedIn',
+      handle: 'attaullah',
+      href: 'https://www.linkedin.com/in/attaullah',
+      icon: 'linkedin',
+    },
+    {
+      label: 'Instagram',
+      handle: 'realattaullahkhan',
+      href: 'https://www.instagram.com/realattaullahkhan/',
+      icon: 'instagram',
+    },
+    { label: 'Email', handle: 'realattaullah461', href: 'mailto:realattaullah461@gmail.com', icon: 'email' },
   ] satisfies SocialLink[],
 }
 
-export interface SkillGroup {
-  title: string
-  items: string[]
-}
-
-export const skillGroups: SkillGroup[] = [
-  {
-    title: 'Languages & Data',
-    items: ['Python', 'TypeScript', 'JavaScript', 'SQL'],
-  },
-  {
-    title: 'AI & Machine Learning',
-    items: ['scikit-learn', 'Pandas', 'NumPy', 'Matplotlib', 'Jupyter'],
-  },
-  {
-    title: 'Tools & Platforms',
-    items: ['Git', 'GitHub', 'Linux', 'Vite', 'React'],
-  },
+export const nav: NavLink[] = [
+  { to: '/', label: 'Home', cmd: '~' },
+  { to: '/projects', label: 'Projects', cmd: 'ls' },
+  { to: '/about', label: 'About', cmd: 'man' },
+  { to: '/contact', label: 'Contact', cmd: 'ping' },
 ]
 
-export interface TimelineItem {
-  period: string
-  title: string
-  org: string
-  description: string
-}
+/** Stats bar under the hero */
+export const stats = [
+  { value: '7+', label: 'GitHub Projects' },
+  { value: '2', label: 'Internships' },
+  { value: '3', label: 'Featured Projects' },
+  { value: '2027', label: 'Graduating' },
+]
 
-export const timeline: TimelineItem[] = [
-  {
-    period: '2023 — Present',
-    title: 'BS Computer Science',
-    org: 'Abdul Wali Khan University Mardan (AWKUM)',
-    description:
-      'Semester 7. Focus on artificial intelligence, machine learning, and data-driven problem solving.',
-  },
-  {
-    period: '2025 — Present',
-    title: 'Final Year Project — AdVeto',
-    org: 'Supervised by Mrs. Sawera Qureshi',
-    description:
-      'Ad-region detection and age-aware risk classification for Android advertisements, with an on-device multimodal (image + OCR text) classifier.',
-  },
+/** Boot sequence lines (shown once per session) */
+export const bootLines = [
+  { text: 'booting attaullah.sys ...', delay: 0 },
+  { text: 'loading modules: ai_ml, data_science, web_dev', delay: 150 },
+  { text: 'fetching GitHub telemetry...', delay: 300 },
+  { text: 'mounting /education ... AWKUM — BS CS, semester 7', delay: 450 },
+  { text: 'mounting /experience ... ZyroInterns × 2', delay: 575 },
+  { text: 'system check: OK', delay: 675 },
+  { text: 'status: READY', delay: 775 },
+]
+
+/** neofetch-style system info panel */
+export const neofetch = [
+  { label: 'OS:', value: 'PortfolioOS v2.6 (Web System)' },
+  { label: 'Host:', value: 'eng-attaullah.github.io' },
+  { label: 'Kernel:', value: 'React 19 + Vite 8' },
+  { label: 'Shell:', value: 'bash / react-router-dom' },
+  { label: 'Repos:', value: '7 public sources' },
+  { label: 'Education:', value: 'BS CS — AWKUM (Semester 7)' },
+  { label: 'Focus:', value: 'Machine Learning / AI' },
+  { label: 'Theme:', value: 'CRT / Phosphor Green' },
 ]
